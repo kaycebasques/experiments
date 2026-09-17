@@ -1,0 +1,4 @@
+requests==2.33.1
+google-genai==2.10.0
+python-dotenv==1.2.2
+chonkie==1.7.0
