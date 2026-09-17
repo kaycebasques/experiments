@@ -1,5 +1,6 @@
 from os import environ
 from pathlib import Path
+from re import IGNORECASE, findall
 from time import sleep
 
 from chonkie import TokenChunker
@@ -9,7 +10,8 @@ from google.genai import types
 from requests import get
 
 
-def _headers(token):
+def _headers():
+    token = environ.get('GITHUB_TOKEN')
     return {
         'Accept': 'application/vnd.github.raw+json',
         'User-Agent': 'experiments/20260917',
@@ -17,25 +19,14 @@ def _headers(token):
     }
 
 
-def _req(url, token):
-    rate_limit_status_codes = (403, 429)
+def _req(url):
+    rate_limit = (403, 429)
     while True:
-        res = get(url, headers=_headers(token), allow_redirects=True, timeout=15)
-        if res.status_code in rate_limit_status_codes:
-            sleep(60)
+        res = get(url, headers=_headers(), allow_redirects=True, timeout=15)
+        if res.status_code in rate_limit:
+            sleep(10)
             continue
         return res
-
-
-class Env:
-
-    def __init__(self):
-        path = Path(environ.get('BUILD_WORKSPACE_DIRECTORY')) / '.env'
-        load_dotenv(path)
-        self.gemini = environ.get('GEMINI_API_KEY')
-        self.github = environ.get('GITHUB_TOKEN')
-        self.owner = environ.get('GITHUB_OWNER')
-        self.repo = environ.get('GITHUB_REPO')
 
 
 class Issue:
@@ -47,8 +38,37 @@ class Issue:
         self._images()
         self._embedding()
 
+    def _parse(self):
+        urls = []
+        html = findall(
+            r'<img\s+[^>]*?src=["\']([^"\']+)["\']', self.body, IGNORECASE
+        )
+        urls.extend(html)
+        md = findall(
+            r'!\[[^\]]*\]\(([^)\s]+)(?:\s+["\'][^"\']*["\'])?\)', self.body
+        )
+        urls.extend(md)
+        seen = set()
+        return [u for u in urls if not (u in seen or seen.add(u))]
+
+    def _download(self, url):
+        res = _req(url)
+        return res.content, res.headers
+
     def _images(self):
-        pass
+        urls = self._parse()
+        for url in urls:
+            if not url.startswith('https://'):
+                continue
+            if url.endswith('.svg'):
+                continue
+            if 'shields.io' in url:
+                continue
+            if 'badge' in url:
+                continue
+            print(url)
+            content, headers = self._download(url)
+            print(headers.get('Content-Type'))
 
     def _embedding(self):
         pass
@@ -56,10 +76,9 @@ class Issue:
 
 class Repo:
 
-    def __init__(self, owner, repo, token):
-        self.owner = owner
-        self.repo = repo
-        self.token = token
+    def __init__(self):
+        self.owner = environ.get('GITHUB_OWNER')
+        self.repo = environ.get('GITHUB_REPO')
         self.issues = []
         self._issues()
 
@@ -71,16 +90,19 @@ class Repo:
                 f'https://api.github.com/repos/{self.owner}/{self.repo}/issues'
                 f'?state=open&per_page={per_page}&page={page}'
             )
-            res = _req(url, self.token)
+            res = _req(url)
             data = res.json()
             issues = [item for item in data if 'pull_request' not in item]
             for i in issues:
-                self.issues.append(Issue(i['number'], i['title'], i['body']))
+                number = i['number']
+                title = i['title']
+                body = i['body']
+                issue = Issue(number, title, body)
+                self.issues.append(issue)
             if len(data) < per_page:
                 break
             page += 1
 
 
-env = Env()
-repo = Repo(env.owner, env.repo, env.github)
-print(repo.issues[100].number)
+load_dotenv()
+repo = Repo()
