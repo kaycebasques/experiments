@@ -29,49 +29,117 @@ def _req(url):
         return res
 
 
+def _parse(chunk):
+    urls = []
+    html = findall(
+        r'<img\s+[^>]*?src=["\']([^"\']+)["\']', chunk, IGNORECASE
+    )
+    urls.extend(html)
+    md = findall(
+        r'!\[[^\]]*\]\(([^)\s]+)(?:\s+["\'][^"\']*["\'])?\)', chunk
+    )
+    urls.extend(md)
+    seen = set()
+    return [u for u in urls if not (u in seen or seen.add(u))]
+
+
+def _download(url):
+    res = _req(url)
+    return res.content
+
+
+def _images(chunk):
+    urls = _parse(chunk)
+    images = []
+    for url in urls:
+        if not url.startswith('https://'):
+            continue
+        if url.endswith('.svg'):
+            continue
+        if 'shields.io' in url:
+            continue
+        if 'badge' in url:
+            continue
+        images.append(_download(url))
+    return images
+
+
+def prepare_query_and_document(content: str) -> str:
+    """Prepares text with task prefix required by gemini-embedding-2."""
+    return f"task: classification | query: {content}"
+
+
+
 class Issue:
 
     def __init__(self, number, title, body):
         self.number = number
         self.title = title
         self.body = body
-        self._images()
         self._embedding()
 
-    def _parse(self):
-        urls = []
-        html = findall(
-            r'<img\s+[^>]*?src=["\']([^"\']+)["\']', self.body, IGNORECASE
-        )
-        urls.extend(html)
-        md = findall(
-            r'!\[[^\]]*\]\(([^)\s]+)(?:\s+["\'][^"\']*["\'])?\)', self.body
-        )
-        urls.extend(md)
-        seen = set()
-        return [u for u in urls if not (u in seen or seen.add(u))]
-
-    def _download(self, url):
-        res = _req(url)
-        return res.content, res.headers
-
-    def _images(self):
-        urls = self._parse()
-        for url in urls:
-            if not url.startswith('https://'):
-                continue
-            if url.endswith('.svg'):
-                continue
-            if 'shields.io' in url:
-                continue
-            if 'badge' in url:
-                continue
-            print(url)
-            content, headers = self._download(url)
-            print(headers.get('Content-Type'))
-
     def _embedding(self):
-        pass
+        max_tokens = 8192
+        tokens_per_image = 258
+        image_count = len(_parse(self.body))
+        image_tokens = image_count * tokens_per_image
+        # 0 images = 8192 tokens per chunk
+        # 1 image  = 8192 - (1 * 258) tokens per chunk
+        # 2 images = 8192 - (2 * 258) tokens per chunk
+        # ideally you only reduce the chunk size when a given
+        # chunk actually has image(s) in it but that seems
+        # like it will require some very complex logic.
+        chunk_size = max_tokens - image_tokens
+        chunker = TokenChunker(chunk_size=chunk_size)
+        chunks = chunker.chunk(self.body)
+        for chunk in chunks:
+            images = _images(chunk.text)
+            print(len(images))
+
+        #     # Format content with task instruction
+        #     raw_text = chunk_text if chunk_text.strip() else " "
+        #     formatted_text = prepare_query_and_document(raw_text)
+        #     contents: list[Any] = [formatted_text]
+        #     # Parse and attach embedded images
+        #     image_urls = extract_image_urls(chunk_text)
+        #     if image_urls:
+        #         for img_url in image_urls:
+        #             image_data = download_image(img_url)
+        #             if image_data:
+        #                 img_bytes, mime_type, _ = image_data
+        #                 img_counter += 1
+        #                 part = types.Part.from_bytes(
+        #                     data=img_bytes,
+        #                     mime_type=mime_type,
+        #                 )
+        #                 contents.append(part)
+        #                 print(f"Attached image part from {img_url}")
+        #     # Generate Gemini embedding with text-only fallback if image
+        #     # embedding is rejected
+        #     try:
+        #         embed_res = genai_client.models.embed_content(
+        #             model=EMBEDDING_MODEL,
+        #             contents=contents,
+        #         )
+        #     except Exception as e:  # pylint: disable=broad-exception-caught
+        #         if len(contents) > 1:
+        #             print(
+        #                 "Warning: Multimodal embedding failed for"
+        #                 f" {file_prefix} ({e}). Retrying with text-only"
+        #                 " content..."
+        #             )
+        #             embed_res = genai_client.models.embed_content(
+        #                 model=EMBEDDING_MODEL,
+        #                 contents=[formatted_text],
+        #             )
+        #         else:
+        #             raise e
+        #     embedding_values = embed_res.embeddings[0].values
+        #     print(
+        #         f"  Generated embedding for {label} chunk {file_prefix}"
+        #         f" ({len(embedding_values)} dims, hash {chunk_hash[:8]}...)"
+        #     )
+
 
 
 class Repo:
