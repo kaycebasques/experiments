@@ -1,3 +1,4 @@
+from json import dumps
 from os import environ
 from pathlib import Path
 from re import IGNORECASE, findall
@@ -7,6 +8,7 @@ from chonkie import TokenChunker
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from puremagic import from_string
 from requests import get
 
 
@@ -45,16 +47,9 @@ def _parse(chunk):
 
 def _download(url):
     res = _req(url)
-    mime_type = res.headers.get('Content-Type')
-    if url.endswith('.jpg') or url.endswith('.jpeg'):
-        mime_type = 'image/jpeg'
-    elif url.endswith('.gif'):
-        mime_type = 'image/gif'
-    elif url.endswith('.png'):
-        mime_type = 'image/png'
-    elif url.endswith('.webp'):
-        mime_type = 'image/webp'
-    return (res.content, mime_type)
+    image = res.content
+    mime = from_string(image, mime=True)
+    return {'bytes': image, 'mime': mime}
 
 
 def _images(chunk):
@@ -99,7 +94,7 @@ class Issue:
         gemini = genai.Client(api_key=environ.get('GEMINI_API_KEY'))
         for chunk in chunks:
             images = _images(chunk.text)
-            query = {'title': self.title, 'body': chunk.text}
+            query = dumps({'title': self.title, 'body': chunk.text})
             contents = []
             if len(images) == 0:
                 # text-only input should use task type
@@ -107,8 +102,10 @@ class Issue:
             else:
                 # multimodal input should not use task type
                 contents.append(query)
-                for image in images:
-                    contents.append(types.Part.from_bytes(data=image[0], mime_type=image[1]))
+                for i in images:
+                    print(i['mime'])
+                    part = types.Part.from_bytes(data=i['bytes'], mime_type=i['mime'])
+                    contents.append(part)
             res = gemini.models.embed_content(
                 model='gemini-embedding-2',
                 contents=contents,
