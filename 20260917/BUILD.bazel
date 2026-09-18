@@ -26,3 +26,13 @@ py_binary(
     ],
 )
 
+py_binary(
+    name = "cluster",
+    srcs = ["cluster.py"],
+    main = "cluster.py",
+    deps = [
+        requirement("numpy"),
+        requirement("polars"),
+    ],
+)
+

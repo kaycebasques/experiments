@@ -137,7 +137,10 @@ class Repo:
     def __init__(self, output_path='embeddings.parquet'):
         self.owner = environ.get('GITHUB_OWNER')
         self.repo = environ.get('GITHUB_REPO')
-        self.output_path = output_path
+        if 'BUILD_WORKING_DIRECTORY' in environ and not Path(output_path).is_absolute():
+            self.output_path = str(Path(environ['BUILD_WORKING_DIRECTORY']) / output_path)
+        else:
+            self.output_path = output_path
         self.records = []
         self.cache = {}
         self._load_cache()
