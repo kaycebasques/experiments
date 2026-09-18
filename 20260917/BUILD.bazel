@@ -18,8 +18,11 @@ py_binary(
     deps = [
         requirement("chonkie"),
         requirement("google-genai"),
+        requirement("polars"),
+        requirement("numpy"),
         requirement("puremagic"),
         requirement("python-dotenv"),
         requirement("requests"),
     ],
 )
+

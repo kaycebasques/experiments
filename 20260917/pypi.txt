@@ -3,3 +3,6 @@ google-genai==2.10.0
 puremagic==2.2.0
 python-dotenv==1.2.2
 requests==2.33.1
+polars==1.44.2
+numpy==2.5.2
+
