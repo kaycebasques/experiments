@@ -45,7 +45,16 @@ def _parse(chunk):
 
 def _download(url):
     res = _req(url)
-    return res.content
+    mime_type = res.headers.get('Content-Type')
+    if url.endswith('.jpg') or url.endswith('.jpeg'):
+        mime_type = 'image/jpeg'
+    elif url.endswith('.gif'):
+        mime_type = 'image/gif'
+    elif url.endswith('.png'):
+        mime_type = 'image/png'
+    elif url.endswith('.webp'):
+        mime_type = 'image/webp'
+    return (res.content, mime_type)
 
 
 def _images(chunk):
@@ -64,21 +73,16 @@ def _images(chunk):
     return images
 
 
-def prepare_query_and_document(content: str) -> str:
-    """Prepares text with task prefix required by gemini-embedding-2."""
-    return f"task: classification | query: {content}"
-
-
-
 class Issue:
 
     def __init__(self, number, title, body):
         self.number = number
         self.title = title
         self.body = body
-        self._embedding()
+        self.embeddings = []
+        self._embed()
 
-    def _embedding(self):
+    def _embed(self):
         max_tokens = 8192
         tokens_per_image = 258
         image_count = len(_parse(self.body))
@@ -92,9 +96,26 @@ class Issue:
         chunk_size = max_tokens - image_tokens
         chunker = TokenChunker(chunk_size=chunk_size)
         chunks = chunker.chunk(self.body)
+        gemini = genai.Client(api_key=environ.get('GEMINI_API_KEY'))
         for chunk in chunks:
             images = _images(chunk.text)
-            print(len(images))
+            query = {'title': self.title, 'body': chunk.text}
+            contents = []
+            if len(images) == 0:
+                # text-only input should use task type
+                contents.append(f'task: classification | query: {query}')
+            else:
+                # multimodal input should not use task type
+                contents.append(query)
+                for image in images:
+                    contents.append(types.Part.from_bytes(data=image[0], mime_type=image[1]))
+            res = gemini.models.embed_content(
+                model='gemini-embedding-2',
+                contents=contents,
+            )
+            embedding = res.embeddings[0].values
+            print(embedding[0:10])
+
 
         #     # Format content with task instruction
         #     raw_text = chunk_text if chunk_text.strip() else " "
