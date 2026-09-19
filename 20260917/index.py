@@ -32,7 +32,7 @@ def get_github_data(url):
         return response
 
 
-def _parse(chunk):
+def parse_image_urls(chunk):
     urls = []
     html = findall(
         r'<img\s+[^>]*?src=["\']([^"\']+)["\']', chunk, IGNORECASE
@@ -46,15 +46,15 @@ def _parse(chunk):
     return [u for u in urls if not (u in seen or seen.add(u))]
 
 
-def _download(url):
+def download_image(url):
     response = get_github_data(url)
     image = response.content
     mime = from_string(image, mime=True)
     return {'bytes': image, 'mime': mime}
 
 
-def _images(chunk):
-    urls = _parse(chunk)
+def extract_images(chunk):
+    urls = parse_image_urls(chunk)
     images = []
     for url in urls:
         if not url.startswith('https://'):
@@ -65,7 +65,7 @@ def _images(chunk):
             continue
         if 'badge' in url:
             continue
-        images.append(_download(url))
+        images.append(download_image(url))
     return images
 
 
@@ -78,12 +78,12 @@ class Issue:
         self.cache = cache if cache is not None else {}
         self.on_embed = on_embed
         self.embeddings = []
-        self._embed()
+        self._generate_embeddings()
 
-    def _embed(self):
+    def _generate_embeddings(self):
         max_tokens = 8192
         tokens_per_image = 258
-        image_count = len(_parse(self.body))
+        image_count = len(parse_image_urls(self.body))
         image_tokens = image_count * tokens_per_image
         # 0 images = 8192 tokens per chunk
         # 1 image  = 8192 - (1 * 258) tokens per chunk
@@ -101,7 +101,7 @@ class Issue:
             else:
                 if gemini is None:
                     gemini = genai.Client(api_key=environ.get('GEMINI_API_KEY'))
-                images = [i for i in _images(chunk.text) if i['mime'] != 'application/xml']
+                images = [i for i in extract_images(chunk.text) if i['mime'] != 'application/xml']
                 query = dumps({'title': self.title, 'body': chunk.text})
                 contents = []
                 if len(images) == 0:
@@ -145,8 +145,8 @@ class Repo:
         self.cache = {}
         self._load_cache()
         self.issues = []
-        self._get_issues()
-        self._prune_issues()
+        self._fetch_issues()
+        self._prune_closed_issues()
 
     def _load_cache(self):
         if Path(self.output_path).exists():
@@ -155,7 +155,7 @@ class Repo:
             for row in self.records:
                 self.cache[row['chunk_text']] = row['embedding']
 
-    def save_embedding(self, issue_number, title, chunk_text, embedding):
+    def _save_embedding(self, issue_number, title, chunk_text, embedding):
         self.records.append({
             'issue_number': issue_number,
             'title': title,
@@ -164,7 +164,7 @@ class Repo:
         })
         self._save_parquet()
 
-    def _to_dataframe(self):
+    def _create_dataframe(self):
         if not self.records:
             return pl.DataFrame()
         dim = len(self.records[0]['embedding'])
@@ -178,7 +178,7 @@ class Repo:
 
     def _save_parquet(self, path=None):
         target = path or self.output_path
-        df = self._to_dataframe()
+        df = self._create_dataframe()
         if not df.is_empty():
             df.write_parquet(target)
             print(f'Saved {len(df)} embeddings to {target}')
@@ -187,7 +187,7 @@ class Repo:
             print(f'Removed empty {target}')
         return df
 
-    def _get_issues(self):
+    def _fetch_issues(self):
         page = 1
         per_page = 100
         while True:
@@ -207,14 +207,14 @@ class Repo:
                     title,
                     body,
                     cache=self.cache,
-                    on_embed=self.save_embedding,
+                    on_embed=self._save_embedding,
                 )
                 self.issues.append(issue)
             if len(data) < per_page:
                 break
             page += 1
 
-    def _prune_issues(self):
+    def _prune_closed_issues(self):
         open_numbers = {issue.number for issue in self.issues}
         before = len(self.records)
         self.records = [

@@ -7,7 +7,7 @@ import numpy as np
 import polars as pl
 
 
-def _resolve_path(path_str):
+def resolve_path(path_str):
     path = Path(path_str)
     if not path.is_absolute() and 'BUILD_WORKING_DIRECTORY' in environ:
         return Path(environ['BUILD_WORKING_DIRECTORY']) / path
@@ -15,7 +15,7 @@ def _resolve_path(path_str):
 
 
 def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
-    path = _resolve_path(parquet_path)
+    path = resolve_path(parquet_path)
     if not path.exists():
         print(f"Error: '{parquet_path}' does not exist. Run ':index' first to generate embeddings.")
         return
