@@ -13,7 +13,7 @@ from requests import get
 import polars as pl
 
 
-def _headers():
+def make_github_headers():
     token = environ.get('GITHUB_TOKEN')
     return {
         'Accept': 'application/vnd.github.raw+json',
@@ -22,14 +22,14 @@ def _headers():
     }
 
 
-def _req(url):
+def get_github_data(url):
     rate_limit = (403, 429)
     while True:
-        res = get(url, headers=_headers(), allow_redirects=True, timeout=15)
-        if res.status_code in rate_limit:
+        response = get(url, headers=make_github_headers(), allow_redirects=True, timeout=15)
+        if response.status_code in rate_limit:
             sleep(10)
             continue
-        return res
+        return response
 
 
 def _parse(chunk):
@@ -47,8 +47,8 @@ def _parse(chunk):
 
 
 def _download(url):
-    res = _req(url)
-    image = res.content
+    response = get_github_data(url)
+    image = response.content
     mime = from_string(image, mime=True)
     return {'bytes': image, 'mime': mime}
 
@@ -114,11 +114,11 @@ class Issue:
                         print(i['mime'])
                         part = types.Part.from_bytes(data=i['bytes'], mime_type=i['mime'])
                         contents.append(part)
-                res = gemini.models.embed_content(
+                response = gemini.models.embed_content(
                     model='gemini-embedding-2',
                     contents=contents,
                 )
-                embedding = res.embeddings[0].values
+                embedding = response.embeddings[0].values
                 print(embedding[0:10])
                 self.cache[chunk.text] = embedding
                 if self.on_embed:
@@ -145,7 +145,7 @@ class Repo:
         self.cache = {}
         self._load_cache()
         self.issues = []
-        self._issues()
+        self._get_issues()
 
     def _load_cache(self):
         if Path(self.output_path).exists():
@@ -161,9 +161,9 @@ class Repo:
             'chunk_text': chunk_text,
             'embedding': embedding,
         })
-        self.save_parquet()
+        self._save_parquet()
 
-    def to_dataframe(self):
+    def _to_dataframe(self):
         if not self.records:
             return pl.DataFrame()
         dim = len(self.records[0]['embedding'])
@@ -175,15 +175,15 @@ class Repo:
         }
         return pl.DataFrame(self.records, schema=schema)
 
-    def save_parquet(self, path=None):
+    def _save_parquet(self, path=None):
         target = path or self.output_path
-        df = self.to_dataframe()
+        df = self._to_dataframe()
         if not df.is_empty():
             df.write_parquet(target)
             print(f'Saved {len(df)} embeddings to {target}')
         return df
 
-    def _issues(self):
+    def _get_issues(self):
         page = 1
         per_page = 100
         while True:
@@ -191,8 +191,8 @@ class Repo:
                 f'https://api.github.com/repos/{self.owner}/{self.repo}/issues'
                 f'?state=open&per_page={per_page}&page={page}'
             )
-            res = _req(url)
-            data = res.json()
+            response = get_github_data(url)
+            data = response.json()
             issues = [item for item in data if 'pull_request' not in item]
             for i in issues:
                 number = i['number']
