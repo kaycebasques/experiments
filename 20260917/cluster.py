@@ -2,6 +2,7 @@ import argparse
 from os import environ
 from pathlib import Path
 
+from dotenv import load_dotenv
 import numpy as np
 import polars as pl
 
@@ -80,17 +81,10 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
         print(f"No similar issue pairs found with similarity >= {threshold:.2f}.")
         return
 
+    owner = environ['GITHUB_OWNER']
+    repo = environ['GITHUB_REPO']
     pairwise_matches.sort(key=lambda x: x['score'], reverse=True)
     print(f"Found {len(pairwise_matches)} similar issue pair(s):\n")
-    for idx, match in enumerate(pairwise_matches, 1):
-        print(f"--- Match #{idx} (Similarity: {match['score']:.4f}) ---")
-        print(f"  Issue #{match['issue_a']}: {match['title_a']}")
-        snippet_a = match['chunk_a'][:120].replace('\n', ' ')
-        print(f"    Chunk: {snippet_a}...")
-        print(f"  Issue #{match['issue_b']}: {match['title_b']}")
-        snippet_b = match['chunk_b'][:120].replace('\n', ' ')
-        print(f"    Chunk: {snippet_b}...")
-        print()
 
     # Group connected components into clusters
     visited = set()
@@ -115,11 +109,12 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
     for c_idx, cluster in enumerate(clusters, 1):
         print(f"Cluster #{c_idx} ({len(cluster)} issues):")
         for num in sorted(cluster):
-            print(f"  - #{num}: {issue_titles.get(num, '')}")
+            print(f"  - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles.get(num, '')}")
         print()
 
 
 def main():
+    load_dotenv()
     parser = argparse.ArgumentParser(
         description="Cluster similar GitHub issues by embedding cosine similarity."
     )

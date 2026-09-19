@@ -29,10 +29,14 @@ py_binary(
 py_binary(
     name = "cluster",
     srcs = ["cluster.py"],
+    data = [
+        ".env",
+    ],
     main = "cluster.py",
     deps = [
         requirement("numpy"),
         requirement("polars"),
+        requirement("python-dotenv"),
     ],
 )
 
