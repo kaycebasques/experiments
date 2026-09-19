@@ -146,6 +146,7 @@ class Repo:
         self._load_cache()
         self.issues = []
         self._get_issues()
+        self._prune_issues()
 
     def _load_cache(self):
         if Path(self.output_path).exists():
@@ -181,6 +182,9 @@ class Repo:
         if not df.is_empty():
             df.write_parquet(target)
             print(f'Saved {len(df)} embeddings to {target}')
+        elif Path(target).exists():
+            Path(target).unlink()
+            print(f'Removed empty {target}')
         return df
 
     def _get_issues(self):
@@ -209,6 +213,18 @@ class Repo:
             if len(data) < per_page:
                 break
             page += 1
+
+    def _prune_issues(self):
+        open_numbers = {issue.number for issue in self.issues}
+        before = len(self.records)
+        self.records = [
+            r for r in self.records if r['issue_number'] in open_numbers
+        ]
+        pruned = before - len(self.records)
+        if pruned > 0:
+            self.cache = {r['chunk_text']: r['embedding'] for r in self.records}
+            print(f'Pruned {pruned} embeddings from closed issues')
+            self._save_parquet()
 
 
 load_dotenv()
