@@ -34,6 +34,7 @@ py_binary(
     ],
     main = "cluster.py",
     deps = [
+        requirement("google-genai"),
         requirement("numpy"),
         requirement("polars"),
         requirement("python-dotenv"),

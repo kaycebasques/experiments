@@ -98,7 +98,9 @@ class Issue:
         gemini = None
         for chunk in chunks:
             if chunk.text in self.cache:
-                embedding = self.cache[chunk.text]
+                cached = self.cache[chunk.text]
+                embedding = cached['embedding']
+                images = cached['images']
             else:
                 if gemini is None:
                     gemini = genai.Client(api_key=environ.get('GEMINI_API_KEY'))
@@ -119,14 +121,23 @@ class Issue:
                     contents=contents,
                 )
                 embedding = response.embeddings[0].values
-                self.cache[chunk.text] = embedding
+                self.cache[chunk.text] = {'embedding': embedding, 'images': images}
                 if self.on_embed:
-                    self.on_embed(self.number, self.title, chunk.text, embedding)
+                    self.on_embed(
+                        self.number,
+                        self.title,
+                        self.body,
+                        chunk.text,
+                        images,
+                        embedding,
+                    )
 
             self.embeddings.append({
                 'issue_number': self.number,
                 'title': self.title,
+                'body': self.body,
                 'chunk_text': chunk.text,
+                'images': images,
                 'embedding': embedding,
             })
 
@@ -150,15 +161,21 @@ class Repo:
     def _load_cache(self):
         if Path(self.output_path).exists():
             df = pl.read_parquet(self.output_path)
-            self.records = df.to_dicts()
-            for row in self.records:
-                self.cache[row['chunk_text']] = row['embedding']
+            if {'body', 'images'}.issubset(df.columns):
+                self.records = df.to_dicts()
+                for row in self.records:
+                    self.cache[row['chunk_text']] = {
+                        'embedding': row['embedding'],
+                        'images': row['images'],
+                    }
 
-    def _save_embedding(self, issue_number, title, chunk_text, embedding):
+    def _save_embedding(self, issue_number, title, body, chunk_text, images, embedding):
         self.records.append({
             'issue_number': issue_number,
             'title': title,
+            'body': body,
             'chunk_text': chunk_text,
+            'images': images,
             'embedding': embedding,
         })
         self._save_parquet()
@@ -170,7 +187,9 @@ class Repo:
         schema = {
             'issue_number': pl.Int64,
             'title': pl.String,
+            'body': pl.String,
             'chunk_text': pl.String,
+            'images': pl.List(pl.Struct({'bytes': pl.Binary, 'mime': pl.String})),
             'embedding': pl.Array(pl.Float32, shape=dim),
         }
         return pl.DataFrame(self.records, schema=schema)
@@ -223,7 +242,10 @@ class Repo:
         ]
         pruned = before - len(self.records)
         if pruned > 0:
-            self.cache = {r['chunk_text']: r['embedding'] for r in self.records}
+            self.cache = {
+                r['chunk_text']: {'embedding': r['embedding'], 'images': r['images']}
+                for r in self.records
+            }
             print(f'Pruned {pruned} embeddings from closed issues')
             self._save_parquet()
 

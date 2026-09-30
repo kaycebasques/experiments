@@ -1,10 +1,19 @@
 import argparse
+from json import dumps
 from os import environ
 from pathlib import Path
+from typing import TypedDict
 
 from dotenv import load_dotenv
+from google import genai
+from google.genai import types
 import numpy as np
 import polars as pl
+
+
+class Response(TypedDict):
+    dupes: list[int]
+    nondupes: list[int]
 
 
 def resolve_path(path_str):
@@ -12,6 +21,40 @@ def resolve_path(path_str):
     if not path.is_absolute() and 'BUILD_WORKING_DIRECTORY' in environ:
         return Path(environ['BUILD_WORKING_DIRECTORY']) / path
     return path
+
+
+def analyze_cluster(gemini, cluster, issue_titles, issue_bodies, issue_images):
+    config = types.GenerateContentConfig(
+        response_mime_type='application/json',
+        response_schema=Response,
+    )
+    model = 'gemini-3.8-flash'
+    contents = [
+        'Analyze the following cluster of GitHub issues and identify which issues '
+        'are duplicates of each other and which are not.\n'
+        'Return a JSON object with:\n'
+        '- "dupes": list of issue numbers that are duplicates of at least one other issue in this cluster.\n'
+        '- "nondupes": list of issue numbers that are not duplicates of any other issue in this cluster.\n'
+        f'Every issue number in {sorted(cluster)} must be placed in either "dupes" or "nondupes".'
+    ]
+    for num in sorted(cluster):
+        issue_data = dumps({
+            'issue_number': num,
+            'title': issue_titles.get(num, ''),
+            'body': issue_bodies.get(num, ''),
+        })
+        contents.append(f'Issue #{num}:\n{issue_data}')
+        for img in issue_images.get(num, []):
+            contents.append(
+                types.Part.from_bytes(data=img['bytes'], mime_type=img['mime'])
+            )
+
+    response = gemini.models.generate_content(
+        model=model,
+        contents=contents,
+        config=config,
+    )
+    return response.parsed
 
 
 def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
@@ -31,7 +74,9 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
     # Extract metadata columns
     issue_numbers = df['issue_number'].to_numpy()
     titles = df['title'].to_list()
+    bodies = df['body'].to_list()
     chunk_texts = df['chunk_text'].to_list()
+    images_col = df['images'].to_list()
 
     # Extract embeddings matrix (N, D) - zero-copy from Polars
     # Gemini embeddings are already unit-normalized, so dot product is exact cosine similarity.
@@ -41,20 +86,28 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
 
     issue_neighbors = {}
     issue_titles = {}
+    issue_bodies = {}
+    issue_images = {}
     pairwise_matches = []
     seen_pairs = set()
 
     # Loop through each embedding and search across all other embeddings
     for i in range(n_rows):
-        src_issue = issue_numbers[i]
+        src_issue = int(issue_numbers[i])
         src_title = titles[i]
         issue_titles[src_issue] = src_title
+        issue_bodies[src_issue] = bodies[i]
+        if src_issue not in issue_images:
+            issue_images[src_issue] = []
+        for img in images_col[i] or []:
+            if not any(existing['bytes'] == img['bytes'] for existing in issue_images[src_issue]):
+                issue_images[src_issue].append(img)
 
         # Dot product on unit-normalized vectors gives cosine similarity
         sims = matrix[i] @ matrix.T
 
         for j in range(n_rows):
-            tgt_issue = issue_numbers[j]
+            tgt_issue = int(issue_numbers[j])
             # Skip chunks belonging to the same issue
             if src_issue == tgt_issue:
                 continue
@@ -106,10 +159,22 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
 
     clusters.sort(key=len, reverse=True)
     print(f"Discovered {len(clusters)} cluster(s) of related issues:\n")
+    gemini = genai.Client(api_key=environ.get('GEMINI_API_KEY'))
     for c_idx, cluster in enumerate(clusters, 1):
+        analysis = analyze_cluster(
+            gemini, cluster, issue_titles, issue_bodies, issue_images
+        )
+        dupes = analysis['dupes']
+        nondupes = analysis['nondupes']
         print(f"Cluster #{c_idx} ({len(cluster)} issues):")
-        for num in sorted(cluster):
-            print(f"  - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles.get(num, '')}")
+        if dupes:
+            print("  Duplicates:")
+            for num in sorted(dupes):
+                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles.get(num, '')}")
+        if nondupes:
+            print("  Non-duplicates:")
+            for num in sorted(nondupes):
+                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles.get(num, '')}")
         print()
 
 
