@@ -2,6 +2,7 @@ import argparse
 from json import dumps
 from os import environ
 from pathlib import Path
+import signal
 from time import sleep
 from typing import TypedDict
 
@@ -11,6 +12,15 @@ from google.genai import errors
 from google.genai import types
 import numpy as np
 import polars as pl
+
+# Polars spawns a pool of background Rust worker threads without masking SIGINT.
+# When Ctrl-C is pressed during a blocking SSL_read on the main thread (e.g.
+# waiting on a Gemini API call), the kernel may deliver SIGINT to a sleeping
+# Polars worker thread instead of the main thread, so Python's signal handler
+# only sets a pending flag and cannot raise KeyboardInterrupt until the network
+# read finishes. Restoring SIG_DFL lets the kernel terminate the process
+# immediately on Ctrl-C.
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
 class Response(TypedDict):
@@ -183,11 +193,11 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
         dupes = analysis['dupes']
         nondupes = analysis['nondupes']
         if dupes:
-            print("  Duplicates:", flush=True)
+            print("\n  Duplicates:", flush=True)
             for num in sorted(dupes):
                 print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles[num]}", flush=True)
         if nondupes:
-            print("  Non-duplicates:", flush=True)
+            print("\n  Non-duplicates:", flush=True)
             for num in sorted(nondupes):
                 print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles[num]}", flush=True)
         print(flush=True)
