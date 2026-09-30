@@ -1,21 +1,30 @@
-# 20260917
+# 20260930
 
-All workflows assume that your current working directory is the directory
-containing this repo.
+Stepping through a minimal Sphinx project to get a detailed understanding of
+how the HTML build works.
 
 ## Quickstart
 
-1. Create an `.env` file in the same directory as this README with the
-   following vars configured:
+1. `cd` into the repo containing this README.
+
+2. `../bzl run :sphinx.run`
+
+   You should see output like this:
 
    ```
-   GEMINI_API_KEY=…
-   OWNER=…
-   REPO=…
-   GITHUB_TOKEN=…
+   INFO: Analyzed target //:sphinx.run (1 packages loaded, 1919 targets configured).
+   INFO: Found 1 target...
+   Target //:sphinx.run up-to-date:
+     bazel-bin/sphinx.run
+   INFO: Elapsed time: 3.768s, Critical Path: 0.03s
+   INFO: 2 processes: 8 action cache hit, 2 internal.
+   INFO: Build completed successfully, 2 total actions
+   INFO: Running command line: bazel-bin/sphinx.run
+   + exec env -- bin/build --show-traceback --builder=html --fail-on-warning _sphinx/_sources /tmp/sphinx-out
+   > …/.cache/bazel/_bazel_kayce/27c9ba2ca7e59497d50aa80e8c762914/execroot/_main/bazel-out/k8-fastbuild/bin/sphinx.run.runfiles/_main/build.py(17)<module>()
+   -> main()
+   (Pdb)
    ```
-
-2. `../bzl run :index`
 
 ## Development
 

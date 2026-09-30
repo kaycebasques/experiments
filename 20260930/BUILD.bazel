@@ -17,7 +17,9 @@ sphinx_docs_library(
 )
 
 py_binary(
-    name = "build",
+    # the slash char in the name is a workaround for a rules_python bug:
+    # https://github.com/bazel-contrib/rules_python/issues/4201
+    name = "bin/build",
     main = "build.py",
     srcs = ["build.py"],
     deps = [
@@ -26,10 +28,10 @@ py_binary(
 )
 
 sphinx_docs(
-    name = "code",
+    name = "sphinx",
     config = "conf.py",
     formats = ["html"],
-    sphinx = ":build",
+    sphinx = ":bin/build",
     deps = [
         ":index",
     ],

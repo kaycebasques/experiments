@@ -13,5 +13,5 @@ if __name__ == "__main__":
         else:
             args.append(arg)
     sys.argv[:] = args
-    # breakpoint()
+    breakpoint()
     main()
