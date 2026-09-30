@@ -40,11 +40,11 @@ def analyze_cluster(gemini, cluster, issue_titles, issue_bodies, issue_images):
     for num in sorted(cluster):
         issue_data = dumps({
             'issue_number': num,
-            'title': issue_titles.get(num, ''),
-            'body': issue_bodies.get(num, ''),
+            'title': issue_titles[num],
+            'body': issue_bodies[num],
         })
         contents.append(f'Issue #{num}:\n{issue_data}')
-        for img in issue_images.get(num, []):
+        for img in issue_images[num]:
             contents.append(
                 types.Part.from_bytes(data=img['bytes'], mime_type=img['mime'])
             )
@@ -99,7 +99,7 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
         issue_bodies[src_issue] = bodies[i]
         if src_issue not in issue_images:
             issue_images[src_issue] = []
-        for img in images_col[i] or []:
+        for img in images_col[i]:
             if not any(existing['bytes'] == img['bytes'] for existing in issue_images[src_issue]):
                 issue_images[src_issue].append(img)
 
@@ -150,7 +150,7 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
             while queue:
                 curr = queue.pop(0)
                 component.append(curr)
-                for neighbor in issue_neighbors.get(curr, []):
+                for neighbor in issue_neighbors[curr]:
                     if neighbor not in visited:
                         visited.add(neighbor)
                         queue.append(neighbor)
@@ -159,7 +159,7 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
 
     clusters.sort(key=len, reverse=True)
     print(f"Discovered {len(clusters)} cluster(s) of related issues:\n")
-    gemini = genai.Client(api_key=environ.get('GEMINI_API_KEY'))
+    gemini = genai.Client(api_key=environ['GEMINI_API_KEY'])
     for c_idx, cluster in enumerate(clusters, 1):
         analysis = analyze_cluster(
             gemini, cluster, issue_titles, issue_bodies, issue_images
@@ -170,11 +170,11 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
         if dupes:
             print("  Duplicates:")
             for num in sorted(dupes):
-                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles.get(num, '')}")
+                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles[num]}")
         if nondupes:
             print("  Non-duplicates:")
             for num in sorted(nondupes):
-                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles.get(num, '')}")
+                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles[num]}")
         print()
 
 

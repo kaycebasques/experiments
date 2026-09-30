@@ -15,7 +15,7 @@ import polars as pl
 
 
 def make_github_headers():
-    token = environ.get('GITHUB_TOKEN')
+    token = environ['GITHUB_TOKEN']
     return {
         'Accept': 'application/vnd.github.raw+json',
         'User-Agent': 'experiments/20260917',
@@ -103,7 +103,7 @@ class Issue:
                 images = cached['images']
             else:
                 if gemini is None:
-                    gemini = genai.Client(api_key=environ.get('GEMINI_API_KEY'))
+                    gemini = genai.Client(api_key=environ['GEMINI_API_KEY'])
                 images = [i for i in extract_images(chunk.text) if i['mime'] != 'application/xml']
                 query = dumps({'title': self.title, 'body': chunk.text})
                 contents = []
@@ -145,8 +145,8 @@ class Issue:
 class Repo:
 
     def __init__(self, output_path='embeddings.parquet'):
-        self.owner = environ.get('GITHUB_OWNER')
-        self.repo = environ.get('GITHUB_REPO')
+        self.owner = environ['GITHUB_OWNER']
+        self.repo = environ['GITHUB_REPO']
         if 'BUILD_WORKING_DIRECTORY' in environ and not Path(output_path).is_absolute():
             self.output_path = str(Path(environ['BUILD_WORKING_DIRECTORY']) / output_path)
         else:
@@ -161,13 +161,12 @@ class Repo:
     def _load_cache(self):
         if Path(self.output_path).exists():
             df = pl.read_parquet(self.output_path)
-            if {'body', 'images'}.issubset(df.columns):
-                self.records = df.to_dicts()
-                for row in self.records:
-                    self.cache[row['chunk_text']] = {
-                        'embedding': row['embedding'],
-                        'images': row['images'],
-                    }
+            self.records = df.to_dicts()
+            for row in self.records:
+                self.cache[row['chunk_text']] = {
+                    'embedding': row['embedding'],
+                    'images': row['images'],
+                }
 
     def _save_embedding(self, issue_number, title, body, chunk_text, images, embedding):
         self.records.append({
