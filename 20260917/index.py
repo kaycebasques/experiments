@@ -3,6 +3,7 @@ from os import environ
 from pathlib import Path
 from re import IGNORECASE, findall
 from time import sleep
+import sys
 
 from chonkie import TokenChunker
 from dotenv import load_dotenv
@@ -111,7 +112,6 @@ class Issue:
                     # multimodal input should not use task type
                     contents.append(query)
                     for i in images:
-                        print(i['mime'])
                         part = types.Part.from_bytes(data=i['bytes'], mime_type=i['mime'])
                         contents.append(part)
                 response = gemini.models.embed_content(
@@ -119,7 +119,6 @@ class Issue:
                     contents=contents,
                 )
                 embedding = response.embeddings[0].values
-                print(embedding[0:10])
                 self.cache[chunk.text] = embedding
                 if self.on_embed:
                     self.on_embed(self.number, self.title, chunk.text, embedding)
@@ -197,6 +196,8 @@ class Repo:
             )
             response = get_github_data(url)
             data = response.json()
+            if 'message' in data:
+                sys.exit(f"error when attempting to fetch issues: {data['message']}")
             issues = [item for item in data if 'pull_request' not in item]
             for i in issues:
                 number = i['number']
