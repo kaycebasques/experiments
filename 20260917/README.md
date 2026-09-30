@@ -5,7 +5,13 @@ containing this repo.
 
 ## Quickstart
 
-1. Create an `.env` file in the same directory as this README with the
+1. Create a classic GitHub personal access token: https://github.com/settings/tokens
+
+   The only scope it needs is `public_repo`.
+
+2. Create a Gemini API key: https://aistudio.google.com/apikey
+
+3. Create an `.env` file in the same directory as this README with the
    following vars configured:
 
    ```
@@ -15,7 +21,7 @@ containing this repo.
    GITHUB_TOKEN=…
    ```
 
-2. `../bzl run :index`
+4. `../bzl run :index`
 
 ## Development
 
