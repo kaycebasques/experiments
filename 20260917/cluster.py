@@ -33,7 +33,7 @@ def analyze_cluster(gemini, cluster, issue_titles, issue_bodies, issue_images):
             retry_options=types.HttpRetryOptions(attempts=1)
         ),
     )
-    models = ('gemini-3.8-flash', 'gemini-3.7-flash')
+    models = ('gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash')
     contents = [
         'Analyze the following cluster of GitHub issues and identify which issues '
         'are duplicates of each other and which are not.\n'
