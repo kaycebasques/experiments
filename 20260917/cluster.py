@@ -2,10 +2,12 @@ import argparse
 from json import dumps
 from os import environ
 from pathlib import Path
+from time import sleep
 from typing import TypedDict
 
 from dotenv import load_dotenv
 from google import genai
+from google.genai import errors
 from google.genai import types
 import numpy as np
 import polars as pl
@@ -27,8 +29,11 @@ def analyze_cluster(gemini, cluster, issue_titles, issue_bodies, issue_images):
     config = types.GenerateContentConfig(
         response_mime_type='application/json',
         response_schema=Response,
+        http_options=types.HttpOptions(
+            retry_options=types.HttpRetryOptions(attempts=1)
+        ),
     )
-    model = 'gemini-3.8-flash'
+    models = ('gemini-3.8-flash', 'gemini-3.7-flash')
     contents = [
         'Analyze the following cluster of GitHub issues and identify which issues '
         'are duplicates of each other and which are not.\n'
@@ -49,12 +54,22 @@ def analyze_cluster(gemini, cluster, issue_titles, issue_bodies, issue_images):
                 types.Part.from_bytes(data=img['bytes'], mime_type=img['mime'])
             )
 
-    response = gemini.models.generate_content(
-        model=model,
-        contents=contents,
-        config=config,
-    )
-    return response.parsed
+    retryable = (429, 500, 502, 503, 504)
+    while True:
+        for model in models:
+            try:
+                response = gemini.models.generate_content(
+                    model=model,
+                    contents=contents,
+                    config=config,
+                )
+                return response.parsed
+            except errors.APIError as e:
+                if e.code in retryable:
+                    print(f'  [{model} returned {e.code} {e.status}, retrying...]', flush=True)
+                    continue
+                raise
+        sleep(5)
 
 
 def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
@@ -69,7 +84,7 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
         return
 
     n_rows = len(df)
-    print(f"Loaded {n_rows} embedding records from {parquet_path}")
+    print(f"Loaded {n_rows} embedding records from {parquet_path}", flush=True)
 
     # Extract metadata columns
     issue_numbers = df['issue_number'].to_numpy()
@@ -82,7 +97,7 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
     # Gemini embeddings are already unit-normalized, so dot product is exact cosine similarity.
     matrix = df['embedding'].to_numpy(allow_copy=False)
 
-    print(f"Exhaustively comparing embeddings (similarity threshold >= {threshold:.2f})...\n")
+    print(f"Exhaustively comparing embeddings (similarity threshold >= {threshold:.2f})...\n", flush=True)
 
     issue_neighbors = {}
     issue_titles = {}
@@ -137,7 +152,7 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
     owner = environ['GITHUB_OWNER']
     repo = environ['GITHUB_REPO']
     pairwise_matches.sort(key=lambda x: x['score'], reverse=True)
-    print(f"Found {len(pairwise_matches)} similar issue pair(s):\n")
+    print(f"Found {len(pairwise_matches)} similar issue pair(s):\n", flush=True)
 
     # Group connected components into clusters
     visited = set()
@@ -158,24 +173,24 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
                 clusters.append(component)
 
     clusters.sort(key=len, reverse=True)
-    print(f"Discovered {len(clusters)} cluster(s) of related issues:\n")
+    print(f"Discovered {len(clusters)} cluster(s) of related issues:\n", flush=True)
     gemini = genai.Client(api_key=environ['GEMINI_API_KEY'])
     for c_idx, cluster in enumerate(clusters, 1):
+        print(f"Cluster #{c_idx} ({len(cluster)} issues):", flush=True)
         analysis = analyze_cluster(
             gemini, cluster, issue_titles, issue_bodies, issue_images
         )
         dupes = analysis['dupes']
         nondupes = analysis['nondupes']
-        print(f"Cluster #{c_idx} ({len(cluster)} issues):")
         if dupes:
-            print("  Duplicates:")
+            print("  Duplicates:", flush=True)
             for num in sorted(dupes):
-                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles[num]}")
+                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles[num]}", flush=True)
         if nondupes:
-            print("  Non-duplicates:")
+            print("  Non-duplicates:", flush=True)
             for num in sorted(nondupes):
-                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles[num]}")
-        print()
+                print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles[num]}", flush=True)
+        print(flush=True)
 
 
 def main():
