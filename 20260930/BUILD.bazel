@@ -1,0 +1,38 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python/uv:lock.bzl", "lock")
+load("@sphinxdocs//sphinxdocs:sphinx.bzl", "sphinx_docs")
+load("@sphinxdocs//sphinxdocs:sphinx_docs_library.bzl", "sphinx_docs_library")
+
+package(default_visibility = ["//visibility:public"])
+
+lock(
+    name = "pypi",
+    srcs = ["pypi.txt"],
+    out = "pypi.lock",
+)
+
+sphinx_docs_library(
+    name = "index",
+    srcs = ["index.rst"],
+)
+
+py_binary(
+    name = "build",
+    main = "build.py",
+    srcs = ["build.py"],
+    deps = [
+        "@pypi//sphinx",
+    ],
+)
+
+sphinx_docs(
+    name = "code",
+    config = "conf.py",
+    formats = ["html"],
+    sphinx = ":build",
+    deps = [
+        ":index",
+    ],
+    extra_opts = ["--fail-on-warning"],
+    allow_persistent_workers = False,
+)

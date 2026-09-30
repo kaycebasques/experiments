@@ -1,0 +1,5 @@
+project = "example"
+release = "0.0.0"
+author = "Kayce Basques"
+copyright = f"2026, {author}"
+theme = "basic"
