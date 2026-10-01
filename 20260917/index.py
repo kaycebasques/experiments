@@ -163,6 +163,8 @@ class Repo:
             df = pl.read_parquet(self.output_path)
             self.records = df.to_dicts()
             for row in self.records:
+                row.setdefault('dupes', [])
+                row.setdefault('nondupes', [])
                 self.cache[row['chunk_text']] = {
                     'embedding': row['embedding'],
                     'images': row['images'],
@@ -176,6 +178,8 @@ class Repo:
             'chunk_text': chunk_text,
             'images': images,
             'embedding': embedding,
+            'dupes': [],
+            'nondupes': [],
         })
         self._save_parquet()
 
@@ -190,6 +194,8 @@ class Repo:
             'chunk_text': pl.String,
             'images': pl.List(pl.Struct({'bytes': pl.Binary, 'mime': pl.String})),
             'embedding': pl.Array(pl.Float32, shape=dim),
+            'dupes': pl.List(pl.Int64),
+            'nondupes': pl.List(pl.Int64),
         }
         return pl.DataFrame(self.records, schema=schema)
 

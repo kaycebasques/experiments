@@ -83,6 +83,62 @@ def analyze_cluster(gemini, cluster, issue_titles, issue_bodies, issue_images):
         sleep(5)
 
 
+def is_cluster_analyzed(cluster_set, issue_dupes, issue_nondupes):
+    return all(
+        (cluster_set - {num}) <= (issue_dupes[num] | issue_nondupes[num])
+        for num in cluster_set
+    )
+
+
+def reconstruct_cluster_analysis(cluster_set, issue_dupes):
+    dupes = []
+    nondupes = []
+    seen = set()
+    for num in sorted(cluster_set):
+        if num in seen:
+            continue
+        group_dupes = issue_dupes[num] & cluster_set
+        if group_dupes:
+            group = sorted({num} | group_dupes)
+            dupes.append(group)
+            seen.update(group)
+        else:
+            nondupes.append(num)
+            seen.add(num)
+    return dupes, nondupes
+
+
+def update_issue_analysis(cluster_set, dupes, issue_dupes, issue_nondupes):
+    grouped_issues = set()
+    for group in dupes:
+        group_set = set(group) & cluster_set
+        if len(group_set) > 1:
+            grouped_issues.update(group_set)
+            for num in group_set:
+                issue_dupes[num].update(group_set - {num})
+                issue_nondupes[num].update(cluster_set - group_set)
+                issue_nondupes[num] -= issue_dupes[num]
+    for num in cluster_set - grouped_issues:
+        issue_nondupes[num].update(cluster_set - {num})
+        issue_nondupes[num] -= issue_dupes[num]
+
+
+def save_analysis(df, path, issue_numbers, issue_dupes, issue_nondupes):
+    dupes_series = pl.Series(
+        'dupes',
+        [sorted(issue_dupes.get(int(num), ())) for num in issue_numbers],
+        dtype=pl.List(pl.Int64),
+    )
+    nondupes_series = pl.Series(
+        'nondupes',
+        [sorted(issue_nondupes.get(int(num), ())) for num in issue_numbers],
+        dtype=pl.List(pl.Int64),
+    )
+    df = df.with_columns(dupes_series, nondupes_series)
+    df.write_parquet(path)
+    return df
+
+
 def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
     path = resolve_path(parquet_path)
     if not path.exists():
@@ -103,6 +159,8 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
     bodies = df['body'].to_list()
     chunk_texts = df['chunk_text'].to_list()
     images_col = df['images'].to_list()
+    dupes_col = df['dupes'].to_list() if 'dupes' in df.columns else [[] for _ in range(n_rows)]
+    nondupes_col = df['nondupes'].to_list() if 'nondupes' in df.columns else [[] for _ in range(n_rows)]
 
     # Extract embeddings matrix (N, D) - zero-copy from Polars
     # Gemini embeddings are already unit-normalized, so dot product is exact cosine similarity.
@@ -114,6 +172,8 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
     issue_titles = {}
     issue_bodies = {}
     issue_images = {}
+    issue_dupes = {}
+    issue_nondupes = {}
     pairwise_matches = []
     seen_pairs = set()
 
@@ -123,6 +183,8 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
         src_title = titles[i]
         issue_titles[src_issue] = src_title
         issue_bodies[src_issue] = bodies[i]
+        issue_dupes.setdefault(src_issue, set()).update(dupes_col[i] or [])
+        issue_nondupes.setdefault(src_issue, set()).update(nondupes_col[i] or [])
         if src_issue not in issue_images:
             issue_images[src_issue] = []
         for img in images_col[i]:
@@ -185,14 +247,23 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
 
     clusters.sort(key=len, reverse=True)
     print(f"Discovered {len(clusters)} cluster(s) of related issues:\n", flush=True)
-    gemini = genai.Client(api_key=environ['GEMINI_API_KEY'])
+    gemini = None
     for c_idx, cluster in enumerate(clusters, 1):
-        print(f"Cluster #{c_idx} ({len(cluster)} issues):", flush=True)
-        analysis = analyze_cluster(
-            gemini, cluster, issue_titles, issue_bodies, issue_images
-        )
-        dupes = analysis['dupes']
-        nondupes = analysis['nondupes']
+        cluster_set = set(cluster)
+        if is_cluster_analyzed(cluster_set, issue_dupes, issue_nondupes):
+            print(f"Cluster #{c_idx} ({len(cluster)} issues, cached):", flush=True)
+            dupes, nondupes = reconstruct_cluster_analysis(cluster_set, issue_dupes)
+        else:
+            print(f"Cluster #{c_idx} ({len(cluster)} issues):", flush=True)
+            if gemini is None:
+                gemini = genai.Client(api_key=environ['GEMINI_API_KEY'])
+            analysis = analyze_cluster(
+                gemini, cluster, issue_titles, issue_bodies, issue_images
+            )
+            dupes = analysis['dupes']
+            nondupes = analysis['nondupes']
+            update_issue_analysis(cluster_set, dupes, issue_dupes, issue_nondupes)
+            df = save_analysis(df, path, issue_numbers, issue_dupes, issue_nondupes)
         for g_idx, group in enumerate(dupes, 1):
             label = f"Duplicates (set #{g_idx}):" if len(dupes) > 1 else "Duplicates:"
             print(f"\n  {label}", flush=True)
