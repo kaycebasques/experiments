@@ -24,7 +24,7 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 
 class Response(TypedDict):
-    dupes: list[int]
+    dupes: list[list[int]]
     nondupes: list[int]
 
 
@@ -48,7 +48,8 @@ def analyze_cluster(gemini, cluster, issue_titles, issue_bodies, issue_images):
         'Analyze the following cluster of GitHub issues and identify which issues '
         'are duplicates of each other and which are not.\n'
         'Return a JSON object with:\n'
-        '- "dupes": list of issue numbers that are duplicates of at least one other issue in this cluster.\n'
+        '- "dupes": list of lists of issue numbers, where each inner list is a set of issues that are duplicates of each other '
+        '(e.g. [[1, 2, 3], [4, 5, 6]] means 1, 2, and 3 are duplicates of each other, and 4, 5, and 6 are duplicates of each other).\n'
         '- "nondupes": list of issue numbers that are not duplicates of any other issue in this cluster.\n'
         f'Every issue number in {sorted(cluster)} must be placed in either "dupes" or "nondupes".'
     ]
@@ -192,9 +193,10 @@ def find_clusters(parquet_path='embeddings.parquet', threshold=0.9):
         )
         dupes = analysis['dupes']
         nondupes = analysis['nondupes']
-        if dupes:
-            print("\n  Duplicates:", flush=True)
-            for num in sorted(dupes):
+        for g_idx, group in enumerate(dupes, 1):
+            label = f"Duplicates (set #{g_idx}):" if len(dupes) > 1 else "Duplicates:"
+            print(f"\n  {label}", flush=True)
+            for num in sorted(group):
                 print(f"    - https://github.com/{owner}/{repo}/issues/{num} - {issue_titles[num]}", flush=True)
         if nondupes:
             print("\n  Non-duplicates:", flush=True)
