@@ -1,5 +1,5 @@
-project = "example"
+project = "20260930"
 release = "0.0.0"
 author = "Kayce Basques"
 copyright = f"2026, {author}"
-theme = "basic"
+html_theme = "basic"
