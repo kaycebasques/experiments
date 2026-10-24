@@ -1,0 +1,16 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python/uv:lock.bzl", "lock")
+load("@deps//:requirements.bzl", "requirement")
+
+lock(
+    name = "deps",
+    srcs = ["deps.in"],
+    out = "deps.lock",
+)
+
+py_binary(
+    name = "20261023",
+    srcs = ["20261023.py"],
+    main = "20261023.py",
+    deps = [requirement("yfinance")],
+)
