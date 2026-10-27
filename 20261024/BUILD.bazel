@@ -1,0 +1,72 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python/uv:lock.bzl", "lock")
+load("@deps//:requirements.bzl", "requirement")
+
+lock(
+    name = "deps",
+    srcs = ["deps.in"],
+    out = "deps.lock",
+)
+
+py_binary(
+    name = "20261024",
+    srcs = ["20261024.py"],
+    main = "20261024.py",
+    deps = [
+        requirement("numpy"),
+        requirement("pillow"),
+        requirement("requests"),
+        requirement("sentence-transformers"),
+        requirement("soundfile"),
+        requirement("torchvision"),
+        requirement("transformers"),
+    ],
+)
+
+py_binary(
+    name = "tmp",
+    srcs = ["tmp.py"],
+    main = "tmp.py",
+    deps = [
+        requirement("numpy"),
+        requirement("scikit-learn"),
+        requirement("scipy"),
+        requirement("sentence-transformers"),
+    ],
+)
+
+py_binary(
+    name = "greedy_medoid",
+    srcs = ["greedy_medoid.py"],
+    main = "greedy_medoid.py",
+    deps = [
+        requirement("numpy"),
+    ],
+)
+
+py_binary(
+    name = "leader_centroid",
+    srcs = ["leader_centroid.py"],
+    main = "leader_centroid.py",
+    deps = [
+        requirement("numpy"),
+    ],
+)
+
+py_binary(
+    name = "pairwise_union",
+    srcs = ["pairwise_union.py"],
+    main = "pairwise_union.py",
+    deps = [
+        requirement("numpy"),
+    ],
+)
+
+py_binary(
+    name = "sts",
+    srcs = ["sts.py"],
+    main = "sts.py",
+    deps = [
+        requirement("numpy"),
+    ],
+)

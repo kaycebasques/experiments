@@ -1,0 +1,459 @@
+[
+  {
+    "by": "JulianMorrison",
+    "id": 1025802,
+    "parent": 1025681,
+    "text": "Ubiquitous mobile/wireless internet integrated into even very trivial consumer goods, with close to 100% coverage across the civilized world. A significant fraction of ordinary consumer goods simply won't work in \"dark\" zones. The gap between 1st and 3rd world countries will widen as a result - take a modern computer into backwoods Africa and it's a paperweight.<p>Google succeed in forcing the mobile providers to be commodity data pipes. They scream blue murder, try to cartel up, but Google breaks the cartel and several big names are forced out of the market.<p>Ebooks defeat paper books. All high street bookstores go bust. Rampant book piracy throws the copyright war into overdrive. Despite international treaties and draconian law, the pirates win.<p>Electric cars become fairly common. A destructive feedback loop starts for gasoline fuel: lower demand, lower profit, vendors go bust, less availability, monopoly prices, lower desirability. The gasoline economy is brittle because it has high fixed costs, a complex supply chain, and its power source isn't fungible. As with film versus digital cameras, the result is an exponential crash in the desirability of gasoline cars, with mass conversion to battery-electric and collapse of the oil industry. Government greenhouse warming policies will continue to be useless, but they'll be eclipsed by events. The big panic will be the overstraining electricity grid. Residential grids were not specced to fuel everybody's car at once.<p>Driverless cars will appear. As they move down from the high end to the mainstream, they'll make taxis cheap enough that private car ownership starts to become quaint. Eventually, driving your own car will be considered selfish risk-taking, and banned on public roads.",
+    "time": 1262360525,
+    "type": "comment"
+  },
+  {
+    "by": "DrJokepu",
+    "id": 1025770,
+    "kids": [
+      1026853,
+      1025799,
+      1025795,
+      1025807
+    ],
+    "parent": 1025681,
+    "text": " * Still no fusion power.<p>* Microsoft sells large parts of itself in order to be able to focus on its core competencies (just like IBM did)<p>* Someone will make an actually usable e-book reader.<p>* During the second half of the decade, the Chinese bubble will burst. This will be a quite heavy shock. A lot of people will lose a lot of money. A younger/more populist group of politicians will assume power in China.<p>* Brazil will become a real powerhouse.<p>* Hugo Chavez &#38; his friends will be removed from power in Venezuela.<p>* Still no Duke Nukem Forever.<p>* 'Minimal Techno' will finally die / go out of fashion.<p>* Lady Gaga will be the new Madonna.<p>* Functional programming / dynamic languages will go out of fashion. People still using them will be judged as incompetent programmers by the people who moved on to the new fashionable programming paradigm(s). At the same time, huge corporations will embrace functional programming / dynamic languages and third world universities will start focusing on them in their courses.<p>* Google will experience change in management. From there, it will be downhill for them (at least for the rest of the decade).<p>* Surprisingly enough, Apple will still stay relevant even though Steve Jobs will have to leave his position due to health problems or something else.<p>That's what I could come up with off the top of my head. Feel free to disagree / rant / do name calling, this is not a serious thread anyway.",
+    "time": 1262359453,
+    "type": "comment"
+  },
+  {
+    "by": "motters",
+    "id": 1025817,
+    "kids": [
+      1025907
+    ],
+    "parent": 1025681,
+    "text": "Also, this decade sees the beginning of the \"pension bomb\" - the demographic bulge of post-war baby boomers crossing the threshold into retirement.  It's fairly easy to predict that there will be pensions scandals, with some pensions companies going bust or paying out far less to recipients than had been originally advertised.  Also I predict the beginning of large supermarket scale retirement homes/complexes/compounds, where economies of scale can reduce costs of elder care.",
+    "time": 1262361011,
+    "type": "comment"
+  },
+  {
+    "by": "timcederman",
+    "id": 1026066,
+    "parent": 1025681,
+    "text": "<i>Ubiquitous computing will finally arrive, with smart cards/RFID on our bodies seamlessly interacting with computers in our environment. As you walk up to your refrigerator, for instance, you're logged in and presented with a customized display. Same goes for the car or the entertainment surface at the Dentist's.</i><p>I wrote my PhD on ubiquitous computing, and I can tell you that I heard \"this is the year\" for ubicomp every single year I spent writing it.  I finished it last year, and stuff I wrote back in 2002 was still relevant.  It's an incremental design that will slowly, slowly come, but nothing dramatic anytime soon, even across a decade.  I'm hopeful there'll be decent advances though.",
+    "time": 1262372537,
+    "type": "comment"
+  },
+  {
+    "by": "adw",
+    "id": 1025703,
+    "kids": [
+      1025713
+    ],
+    "parent": 1025681,
+    "text": "Network analysis and data mining will claim their first major political scalp.<p>That'll be a watershed moment: the politics of information are going to start being the kind of core liberal issue that environmental issues currently are.",
+    "time": 1262356363,
+    "type": "comment"
+  },
+  {
+    "by": "rms",
+    "id": 1025758,
+    "kids": [
+      1025763,
+      1026557
+    ],
+    "parent": 1025681,
+    "text": "A habitable (to some life, not necessarily to human life) extra-solar Earth like planet is discovered by 2020.",
+    "time": 1262359058,
+    "type": "comment"
+  },
+  {
+    "by": "jsz0",
+    "id": 1026022,
+    "parent": 1025681,
+    "text": "-I think this is finally going to be the post-PC decade. The evolution of SmartPhones, set tops, cloud computing and other mobile devices is going to make the PC redundant for most people. By the end of this decade I could see the PC being exclusively a business tool or power user tool.<p>-We're going to have some major Internet growth pains. We haven't prepared for the bandwidth on-slaught of IP video and we haven't moved fast enough on IPV6. In the US at least our broadband infrastructure is held hostage by corporations looking to maximize profit with little regard for quality of service and tons of conflict of interest as a content provider.",
+    "time": 1262370852,
+    "type": "comment"
+  },
+  {
+    "by": "jacquesm",
+    "id": 1025696,
+    "kids": [
+      1025753,
+      1025791
+    ],
+    "parent": 1025681,
+    "text": "Googles turnover exeeds Microsofts by 2015, if not earlier.<p>As for the displays the 30\" screens already do 2560x1600, they're still a good bit of money but they'll be affordable within 2 to 3 years (and some people already think they're affordable).<p>The decade that parallel processing became commonplace<p>the end of 32 bit computing.<p>Some unknown manufacturer will make a tablet-phone-musicplayer hybrid and score.",
+    "time": 1262355803,
+    "type": "comment"
+  },
+  {
+    "by": "ericb",
+    "id": 1025787,
+    "kids": [
+      1025947
+    ],
+    "parent": 1025681,
+    "text": "-Unauthenticated free wifi becomes nearly extinct after a major hacking incident is traced to Panera Bread (or similar) and a court rules that companies are liable for the actions of those on their free wifi networks. Realizing this, companies force authentication on everyone or turn off their wifi all together.<p>-Technology continues to move toward extending our proprioception as we invent solutions that give us continual awareness of our loved ones, their location, and emotional state as if they are a part of us.<p>-Tracking your children electronically becomes a social norm to the extent that <i>not</i> tracking them is considered somewhat negligent.<p>-By the end of the decade, the phone <i>is</i> the personal computer.<p>-External brain-computer interfaces make progress, and typing begins to be replaced by the end of the decade.<p>-BPA and pthalates are finally banned from the food and personal grooming categories.<p>-In the later half of the decade, Steve Jobs realizes he is in spitting distance of toppling the Microsoft business near-monopoly and by hook or by crook, puts out the business apps, email servers, etc needed to finish the job. In spite of this, the transition takes years.<p>-People become more privacy aware after an image search engine with facial recognition is popularized and they realize that any picture ever posted of them by anyone is in the search result for their name. People become less willing to let others take compromising pictures as  if they become posted, the link back to them will be made.<p>-A company makes a practice of hiring experienced older workers that other companies won't touch at sub-standard pay rates and the strategy works so well they are celebrated in a Fortune article.<p>Edit:<p>-The technology that will eventually 'cure' cancer is invented--essentially a find and kill tool for a genetic signature. Signature creation is built for more and more cancers and becomes more dynamic with added logic over time.",
+    "time": 1262359950,
+    "type": "comment"
+  },
+  {
+    "by": "edw519",
+    "id": 1025798,
+    "kids": [
+      1025811,
+      1025841,
+      1025839,
+      1025941,
+      1026318,
+      1025816,
+      1025815,
+      1027331,
+      1025806
+    ],
+    "parent": 1025681,
+    "text": "<p><pre><code>  Hacker News 12/31/2019 new | comments | leaders | jobs | submit\tlogin\n\n  1. Tell HN: Congratulations Patio11 - first to reach 1,000,000 karma\n     4 points by iamelgringo 1 hour ago | discuss\n\n  2. Ask HN: Any Predictions for the Year 2029?\n     11 points by DanielBMarkham 37 minutes ago | 8 comments\n\n  3. The Apple Tablet to Launch 1st Quarter 2020 (cnet.com)\n     210 points by vaksel 20 hours ago | 122 comments\n\n  4. President-Elect Graham to Appoint Sam Altman to Cabinet (msnbc.com)\n     14 points by muriithi 4 hours ago | 2 comments\n\n  5. Trevor Blackwell's Robot Collects Rocks on Mars (science.com)\n     143 points by ojbyrne 18 hours ago | 81 comments\n\n  6. Tell HN: Hacker News is getting too much like reddit\n     17 points by jamesjones 6 hours ago | 3 comments\n\n  7. Last Land Line Disconnected at Midnight (cnn.com)\n     6 points by chickamade 3 hours ago | discuss\n\n  8. Mark Zuckerman buys Portugal (worldnews.com)\n     51 points by larryz 14 hours ago | 16 comments\n\n  9. How Half Our Staff Telecommutes from Space (joelonsoftware.com)\n     45 points by jspolsky 13 hours ago | 2 comments\n  \n  10. No Deadlines Needed After Singularity is Reached (wired.com)\n      44 points by bxgame 14 hours ago | 28 comments\n\n  11. Ask pg: Why do YC teams only get $1,000,000?\n      19 points by abcklm 9 hours ago | 5 comments\n\n  12. KidneyExchange.com has 10,000th successful transplant (yahoo.com)\n      23 points by phsr 10 hours ago | 7 comments\n\n  13. Walmart Acquires Microsoft (wallstreetjournal.com)\n      76 points by francis24 20 hours ago | 17 comments\n\n  14. Baby Communicates from Womb via usb23.7 (scientificamerican.com)\n      13 points by johnson 8 hours ago | 7 comments\n\n  15. Mark Bao Starts 1,000th Start-Up (startupnews.com)\n      4 points by MarySmith 3 hours ago | discuss\n\n  16. unalone accepts Pulitzer for blog (cnn.com)\n      20 points by bootload 10 hours ago | 11 comments\n\n  17. Ask HN: Review my app: NoMoreAds.com (nomoreads.com)\n      17 points by fred 10 hours ago | discuss\n\n  18. Poll: Favorite Language, Ruby 92.7 or C++++++++\n      37 points by uafes 17 hours ago | 5 comments\n\n  19. Feds Force Google to Divest its Apps Business (news.com)\n      38 points by pete 17 hours ago | 5 comments\n\n  20. Burrito Tunnel Between Calif &#38; NYC Finally Completed (onion.com)\n      50 points by jose 20 hours ago | 20 comments\n  \n  21. In 2020 Belize will become the world\u2019s second-largest economy (economist.com)\n      30 points by pg 16 hours ago | 23 comments\n\n  22. Ask HN: What was Microsoft Office?\n      63 points by yahfsh 23 hours ago | 6 comments\n\n  23. Wikipedia Available on Gumwrapper (abc.com)\n      3 points by lapenne 3 hours ago | discuss\n\n  24. Boeing Dreamliner Delayed Until 2022 (airlinenews.com)\n      4 points by mitchel 5 hours ago | discuss\n\n  25. Ted Williams becomes 1st to win MVP with 2 different bodies (mlb.com)\n      5 points by johnson 6 hours ago | 2 comments\n\n  26. Ask HN: Review my app (virtualsex.com)\n      125 points by ghpoa 1 day ago | 13 comments\n\n  27. Science: Cigarettes Were Healthy After All (science.com)\n      43 points by woodyallen 20 hours ago | 14 comments\n\n  28. Broadband Finally Reaches Flint, Michigan (cbs.com)\n      133 points by johnguest 1 day ago | 20 comments\n\n  29. GO TO Added to Python, 27 Programmers Jump Out Windows (python.org)\n      149 points by swert 1 day ago | 20 comments\n\n  30. Wipe The Slate Clean For 2020, Commit Web 9.0 Suicide (techcrunch.com)\n      2 points by nreece 2 hours ago | discuss\n\n  More\n\n  Lists | RSS | Bookmarklet | Guidelines | FAQ | News News\n  Feature Requests | Y Combinator | Apply | Library</code></pre>",
+    "time": 1262360342,
+    "type": "comment"
+  },
+  {
+    "by": "mojuba",
+    "id": 1025706,
+    "kids": [
+      1025786,
+      1025715,
+      1025981
+    ],
+    "parent": 1025681,
+    "text": "I predict (and hope for) a major turn back to simplicity in technologies. Multimillion-line software will go extinct like dinosaurs. Existing programming languages and platforms will gradually be replaced with ones so simple and elegant that one software component will be written and maintained by one to three developers and art designers and not a whole software company packed with managers and other unnecessary staff. Oh, and managers along with poeple who \"understand\" \"software business\" but not software will hopefully go extinct too.",
+    "time": 1262356519,
+    "type": "comment"
+  },
+  {
+    "by": "tlrobinson",
+    "id": 1025748,
+    "kids": [
+      1026072,
+      1025769
+    ],
+    "parent": 1025681,
+    "text": "I predict lots of people will make predictions, but we'll never go back to check and see if they were right.<p>Was there a 2009 prediction thread we can look at?<p>Fun website idea: a site where you register your predictions and a date you expect it to happen by, then when that date occurs people can confirm/deny your prediction. And perhaps you could make it a game by assigning points to predictions.",
+    "time": 1262358761,
+    "type": "comment"
+  },
+  {
+    "by": "artagnon",
+    "id": 1025790,
+    "kids": [
+      1026312
+    ],
+    "parent": 1025681,
+    "text": "1. The death of x86, as we know it- x86 emulation for historical reasons. One of CPU/ GPU will have to beat the other.<p>2. The rise of mainstream functional programming.<p>3. By 2020, Chrome and Firefox each have 35% market share. Internet Explorer becomes insignificant.<p>4. PS4 gets something to thrash Project Natal. The death of the PC as a gaming platform.<p>5. The death of GCC. LLVM/ Clang will replace it.<p>6. Microsoft tries harder to be the be-all and end-all of all software/ services, and eventually starts losing market share in several weak sectors.",
+    "time": 1262360067,
+    "type": "comment"
+  },
+  {
+    "by": "erikstarck",
+    "id": 1026088,
+    "kids": [
+      1027153,
+      1026370,
+      1026152
+    ],
+    "parent": 1025681,
+    "text": "Facebook will be the Google of the decade.<p>Google will be the Microsoft of the decade.<p>Microsoft will be the IBM of the decade.",
+    "time": 1262373317,
+    "type": "comment"
+  },
+  {
+    "by": "JulianMorrison",
+    "id": 1025954,
+    "parent": 1025681,
+    "text": "Oh and another thing - quantum computing will start to surge around the third quarter of the decade. It won't be a general tool and it won't be used for cracking crypto - it will be doing things like data mining, bioinformatics, and solving variations on the travelling salesman problem.",
+    "time": 1262367653,
+    "type": "comment"
+  },
+  {
+    "by": "rms",
+    "id": 1025773,
+    "parent": 1025681,
+    "text": "In 2020, AMD's 3rd generation holodeck isn't quite like Star Trek, but the future video games and videoconferencing/telepresence systems make today's tech look like something out of the stone age.<p>Reference: AMD's product roadmap is for the first generation, holodeck in 2016. <a href=\"http://www.anandtech.com/printarticle.aspx?i=3635\" rel=\"nofollow\">http://www.anandtech.com/printarticle.aspx?i=3635</a><p><i>\"Carrell believes it'll take seven years to be able to deliver a 180 degree hemispherical display (you're not completely surrounded by displays but at least your forward and peripheral vision is) with positionally accurate and phase accurate sound (both calculated by the GPU in real time). The GPU will also be used to recognize speech, track gestures and track eye movement/position.\"</i>",
+    "time": 1262359525,
+    "type": "comment"
+  },
+  {
+    "by": "wallflower",
+    "id": 1025834,
+    "parent": 1025681,
+    "text": "At least one HN long-time contributor and non YC will launch a company that does stupendously well and he/she will reference HN as a vital resource/support in their formative days.<p>Videogames continue to evolve into real-time collaborative tools.<p>The 1st edition of The Primer (a magical in the Arthur C. Clarke sense AI device).<p>\"A book that is powered by a computer so advanced it\u2019s almost magical, and it teaches children everything. It does this through a fully interactive story. It teaches you how to read, how to do maths, it teaches you morals, ethics, even self-defence.\"<p><a href=\"http://mssv.net/2006/05/01/the-young-ladys-illustrated-primer/\" rel=\"nofollow\">http://mssv.net/2006/05/01/the-young-ladys-illustrated-prime...</a>",
+    "time": 1262361726,
+    "type": "comment"
+  },
+  {
+    "by": "rms",
+    "id": 1025788,
+    "parent": 1025681,
+    "text": "Also see thread on Lesswrong: <a href=\"http://lesswrong.com/lw/1la/new_years_predictions_thread/\" rel=\"nofollow\">http://lesswrong.com/lw/1la/new_years_predictions_thread/</a>",
+    "time": 1262360049,
+    "type": "comment"
+  },
+  {
+    "by": "Scott_MacGregor",
+    "id": 1026255,
+    "parent": 1025681,
+    "text": "Here are my predictions (the lucky 7) for the next decade:<p>1. Our vision for our company will be in place, our startup won\u2019t be a <i>startup</i> anymore, it will be a full fledged powerhouse that will change the way certain things are done (that\u2019s still under wraps) for a lot of people. Our company will be an important part of people\u2019s lives and over this decade we will flex and grow to meet their demands and expectations. Some of you in this forum will be working for us. You will be well paid and you like it.<p>2. The media as we know it now will fade away from people\u2019s lives like the Oldsmobile and the Pontiac. Perfectly viable businesses, self-destructed, not important enough to qualify for taxpayer bailouts just gone from the scene like the horse and buggy. They had a good run but now it\u2019s over.<p>3. WIFI will be free for everyone in all major metropolitan areas and it will be 100% taxpayer supported.<p>4. The governments (with the exception of China and Australia) will cease trying to regulate and criminalize the internet %100, and will allow it to exist and grow according to the will of those who use it and build it.<p>5. Taxes in California will be the lowest in the nation. Arnold Schwarzenegger will admit he has read HN on a daily basis for years to keep his spirits up about the economy but has never made a single post.<p>6. Politically, Generation-X will be in power--look out.<p>7. No more airline travel hassles in the USA, people will be able to board and fly without government  restrictions or searches.",
+    "time": 1262380724,
+    "type": "comment"
+  },
+  {
+    "by": "10ren",
+    "id": 1026574,
+    "parent": 1025681,
+    "text": "- Spherical displays (\"<i>you</i> inside\")<p>- Multi-core, with identical cores, is abandoned in favour of highly\nspecialized cores (like organs in the body, or firms in the economy,\ndue to the same pressures: \"transaction costs\" - <a href=\"http://en.wikipedia.org/wiki/Ronald_Coase#The_Nature_of_the_Firm\" rel=\"nofollow\">http://en.wikipedia.org/wiki/Ronald_Coase#The_Nature_of_the_...</a>)<p>- The first real AI is created, but isn't taken seriously until it\ncomes up with a revolutionary way of promoting soap powder,\nwhich advertising executives describe as \"blindingly obvious\" in\nhindsight. However, its success is tragically short-lived, as advertising\nis mmediately redefined as not requiring genuine intelligence.\nThe search for <i>real</i> AI continues....<p>- a formal theory of the \"good life\", that maximizes human\nhappiness - joy, contentment and satisfaction - is proposed.\nTo almost universal chagrin, it is experimentally tested...\nand verified. A virtual reality game is created, based on the\ntheory. Massive hoards of users are anticipated, but no one plays\nit. A competitor then creates a version with the suffering and\npain removed. It's a runaway hit.",
+    "time": 1262396852,
+    "type": "comment"
+  },
+  {
+    "by": "Slashed",
+    "id": 1025702,
+    "kids": [
+      1025745,
+      1026720,
+      1025711
+    ],
+    "parent": 1025681,
+    "text": "Death of traditional news industry.",
+    "time": 1262356203,
+    "type": "comment"
+  },
+  {
+    "by": "wheels",
+    "id": 1025700,
+    "kids": [
+      1025705,
+      1025794,
+      1026204,
+      1025764,
+      1025717
+    ],
+    "parent": 1025681,
+    "text": "Ah, such a nerd.  Years aren't zero indexed.  Technically next year is the start of a new decade.  ;-)",
+    "time": 1262355989,
+    "type": "comment"
+  },
+  {
+    "by": "jacquesm",
+    "id": 1025709,
+    "kids": [
+      1025731
+    ],
+    "parent": 1025681,
+    "text": "This one is meta, but I think it will happen:<p>HN will split.",
+    "time": 1262356732,
+    "type": "comment"
+  },
+  {
+    "by": "brfox",
+    "id": 1025855,
+    "kids": [
+      1025913,
+      1025885,
+      1025871
+    ],
+    "parent": 1025681,
+    "text": "No biomedical predictions yet...<p>1. Everyone will have their full genome sequenced if they need some sort of medical treatment.<p>2.  Healthcare will start to become cheaper due to personalized medicine and more data based decision-making.<p>3. Traditional drug discovery will be begin to be replaced by something: complex drug combinations, nanotech, ??<p>4. Some gene-therapy will be more commonplace.<p>5. End of cancer?  infections?  probably not",
+    "time": 1262362649,
+    "type": "comment"
+  },
+  {
+    "by": "varjag",
+    "id": 1025740,
+    "kids": [
+      1026230,
+      1025747,
+      1026058
+    ],
+    "parent": 1025681,
+    "text": "America will pull out from Afghanistan, and the central government will fall before the decade ends.",
+    "time": 1262358295,
+    "type": "comment"
+  },
+  {
+    "by": "IsaacL",
+    "id": 1027093,
+    "parent": 1025681,
+    "text": "- Facebook will not be displaced by another social network. It will IPO some time in the next two years.<p>- Twitter will become profitable, but not as much as some expect. It will be less profitable than Facebook, and may sell to another company.<p>- Microsoft will not have gone anywhere, though it will have shrunk and may have evolved into a consultancy company on the lines of IBM. Many businesses on the Mircosoft stack will remain on it. Although the desktop market will shrink, perhaps considerably between 2015 and 2020, desktops will still be sold to hardcore PC gamers and in the third world, and Windows will remain the OS of choice. Laptops will become the standard computer, and Windows will also retain the majority market share, though OS X, Linux and Chrome OS will all gain here.<p>- Internet Explorer will shrink, but won't go away. IE6 will hang around for a few years, but may die very rapidly in workplaces when some killer enterprise web application stops supporting it. It will remain widespread in East Asia, at least as far as 2015. Now that Google is advertising Chrome on billboards here in the UK, all that can be safely predicted about the browser market is that it'll be extremely competitive.<p>- Chrome OS or a similar operating system that relies on web access may grow extremely slowly at first, before rapidly gaining share amongst certain market segments. It will be most successful in places like cities that grant free municipial wifi access.<p>- Mobile phones won't replace computers, but increasing penetration amongst the poorest in developing countries, and increasingly capable handsets in developed countries (and developing countries) will make them a colossal juggernaut. Many of the really big changes, especially social changes, will be caused by mobiles.<p>- For any definition of 'success', there will be more tech startups reaching that level in the 2010s than in the 2000s. For example, there will be more than four startups of Youtube/Facebook/Twitter/Zynga proportions.<p>- In addition, at least one of the 'big' startups of the second half of the decade will have been possible with 2009 technology. By this I mean that people will still be discovering new potential for browser-based web applications built with current client-side technologies, which will remain ubiquitous, although new alternatives will appear.<p>- It will be an even better time to start a startup in 2020 than it is now. One of the key drivers of ease-of-starting-up-ness will not be new technology, but new platforms - like Facebook and viral marketing, but better; or that solve other problems like micropayments, customer development, retention, and so on.<p>- Hence, starting up will become a more attractive career option, though well-meaning family will still say \"at least finish your degree first\".<p>- As Moore's Law marches on, dynamic languages that are even slower than Ruby are likely to catch on. They may be to Ruby what Ruby is to Java, trading even more programmer time for CPU time.<p>- Having said that, Moore's law will at least hiccup and may stop altogether in the middle of the decade, as semiconductor feature widths drop below 11nm. Since this will likely encourage investment in quantum computing and nanotechnology, by 2020 we might be seeing something faster than Moore's Law.<p>- An international deal, of the kind that was aimed for at Copenhagen, will be reached over the next five years, though it might not be far-reaching enough to limit warming to 2 degrees in the long-term. (Despite the failure of the Copenhagen talks, it appears that world leaders almost universally recognize the need to take action over man-made climate change, though the various political problems will remain hard problems). China may not be part of such a deal, though the US likely will. Environmental disasters will begin to increase through the decade, as will disasters that are probably not caused by anthropogenic global warming but will be blamed by it anyway; this will provoke more of a push for action.<p>- Increasing fuel prices, and green taxes or incentives, will mean large shops will begin to replaced by warehouses, as traditional retail gives way to home delivery.<p>- China will not become a democracy, or even make moves in that direction. However the rule of law will strengthen, and some civil liberties will increase. Internet crackdowns will continue, and may increase in severity, and will still be rationalized by porn.<p>- Despite multiple new fads that purport to make software development ten times faster and error-free, it will remain a hard problem.<p>- You still won't be able to talk to your fridge, and gesture-based HCI will remain a fun gimmick.<p>- Virtual worlds like Second Life will remain niche, but World of Warcraft will pass 20 million users and a Facebook game or similar will pass 200 million users.<p>- The next big thing will be something totally unknown and unpredictable now, as user-generated content and social networking were in 1999. However, when it does appear, various 'experts' on it will spring from nowhere to lecture us all about it. It will still be really cool, though.<p>I am actually going to save a copy of this; although they all seem perfectly reasonable to me, from an objective standpoint I'm probably laughably wrong on at least 2/3 of them, and it'll be interesting to look back to see which ones they were.",
+    "time": 1262431218,
+    "type": "comment"
+  },
+  {
+    "by": "paraschopra",
+    "id": 1025736,
+    "kids": [
+      1025750
+    ],
+    "parent": 1025681,
+    "text": "Ebook readers will become ubiquitous in developed countries by 2012-2013 and then developing countries by 2020<p>(Of course all my predictions have +/- a couple of years of margin for error)<p>[EDIT: changed 2010 to 2020, guess I am still in 2009 mode]",
+    "time": 1262357975,
+    "type": "comment"
+  },
+  {
+    "deleted": true,
+    "id": 1025729,
+    "parent": 1025681,
+    "time": 1262357744,
+    "type": "comment"
+  },
+  {
+    "by": "icefox",
+    "id": 1026549,
+    "parent": 1025681,
+    "text": "A new OS for the desktop is introduced and gains a significant following.  And I am not talking about the next Microsoft/OS X/KDE incremental release.  Probably based on a Linux kernel it would have a different security system, different application deployment and upgrade system.  Pretty much taking all we have learned with desktops the past fifteen years and applying them without having to live with the existing legacy applications.",
+    "time": 1262395609,
+    "type": "comment"
+  },
+  {
+    "by": "DaniFong",
+    "id": 1026260,
+    "kids": [
+      1030011
+    ],
+    "parent": 1025681,
+    "text": "Both solar and wind power will be produced at a lower cost than power from coal and natural gas plants, and sold to customers when they want it, how they want it.",
+    "time": 1262380876,
+    "type": "comment"
+  },
+  {
+    "by": "antirez",
+    "id": 1025765,
+    "parent": 1025681,
+    "text": "Internet will become for most people in developed countries as important as it used to be for \"early adopters\" in the past.",
+    "time": 1262359311,
+    "type": "comment"
+  },
+  {
+    "by": "samuel",
+    "id": 1025853,
+    "kids": [
+      1025990
+    ],
+    "parent": 1025681,
+    "text": "IPv4 address space will be exhausted(I know, I know, a cheap shot).",
+    "time": 1262362553,
+    "type": "comment"
+  },
+  {
+    "by": "motters",
+    "id": 1025738,
+    "kids": [
+      1025739,
+      1025785
+    ],
+    "parent": 1025681,
+    "text": "Two main predictions:<p>Telerobots become commonplace.  These will be not much more than a wheeled or tracked base with a pole and holder for a mobile phone.  It allows you to visit people in their homes, visit companies or customers, provide some kinds of medical service and carry out inspections of remote sites.<p>Augmented reality becomes a major entertainment system.  You wear something like an EyeTap device and 3D content is projected into your field of view.  The device also contains a accelerometers (same as the Wii controllers) to monitor head pose.  Highly compelling 3D content, including games, business charts, street directions, ads, and even \"adult content\" can be interacted with at any location using the headset, which is wirelessly linked to something like a mobile phone or laptop.",
+    "time": 1262358095,
+    "type": "comment"
+  },
+  {
+    "by": "zacharypinter",
+    "id": 1025867,
+    "parent": 1025681,
+    "text": "I predict that the various phone (land/cell) and television services will become commoditized into internet providers. There will be no need for service providers to setup a phone number or voicemail. You'll simply have devices that connect to wired or wireless internet service and use whatever application is preferred for text, voice, and video communication. I think something like a skype username will become the defacto way of identifying people, instead of remembering or storing phone numbers.<p>I'm sure the existing companies (verizon, AT&#38;T, sprint) will fight this change (who wants their business to become a commodity?), but they'll only delay the inevitable.",
+    "time": 1262363250,
+    "type": "comment"
+  },
+  {
+    "by": "slvrspoon",
+    "id": 1025943,
+    "parent": 1025681,
+    "text": "i see:\n- some significant progress against cancer in the tenties and that being a big thing.\n- growth of a chinese middle class with a voice and some balls and independence\n- continued problems with islam, terrorists, and the first terrorist small nuclear detonation.\n- possible but not probably achievements in nanotech or energy on the tech front\n- wifi data collection on everything as the main tech change in this coming decade.  internet and software basically a sideways moving bore and snore\n- privacy as an issue for the common user",
+    "time": 1262367180,
+    "type": "comment"
+  },
+  {
+    "by": "jeromec",
+    "id": 1026044,
+    "kids": [
+      1026485
+    ],
+    "parent": 1025681,
+    "text": "<i>&#62; - Major changes will happen in Iran, one way or the other. The current trajectory they are on does not seem sustainable for a decade.</i><p>I feel bad for the situation in Iran. I also predict tumult, but with no real change for any amount of violence and bloodshed. This is because the people still want a theocracy, which will inherently be totalitarian. You can't have it both ways; demanding freedom along with a theocracy is paradoxical.",
+    "time": 1262371861,
+    "type": "comment"
+  },
+  {
+    "by": "tommorris",
+    "id": 1025771,
+    "kids": [
+      1025822,
+      1025995
+    ],
+    "parent": 1025681,
+    "text": "Widespread adoption of GNU/Linux on the desktop. (Prompted by...)<p>Widespread adoption of LISP by developers. (Both of which cause...)<p>The Singularity! (But, sadly, Ray Kurzweil dies a few days before the Singularity happens.)<p>Okay, okay, prediction is a mugs game.<p>Democracy in Iran would be nice. I'm not sure why I need a customised personal display on my refrigerator. Cheaper displays and other computing devices would be nice - as would a stable, clean energy supply to power them with.",
+    "time": 1262359471,
+    "type": "comment"
+  },
+  {
+    "by": "bioweek",
+    "id": 1026279,
+    "kids": [
+      1026451
+    ],
+    "parent": 1025681,
+    "text": "What about the emergence of ubiquitous free internet?  I'm thinking it will take of the form of everyones' mobile phones forming a global, giagantic mesh network? (Is that the right term?)<p>How likely is that?  It seems like the next step in the evolution of the internet, turning into something that no one can possibly control.",
+    "time": 1262381873,
+    "type": "comment"
+  },
+  {
+    "by": "lallysingh",
+    "id": 1025783,
+    "parent": 1025681,
+    "text": "Really the best part I'm looking forward to is Doctor Who.  I'm pretty apprehensive about the new Doctor, but there's a full season and frankly, the bits from \"The End of Time\" p1 are pretty exciting.<p>Predictions: we'll see a good-sized shift in our political base representing the un/under-skilled and unemployed.",
+    "time": 1262359891,
+    "type": "comment"
+  },
+  {
+    "by": "teeja",
+    "id": 1026488,
+    "parent": 1025681,
+    "text": "Citizens of the US will begin to publicly insist on being told what to think.",
+    "time": 1262390702,
+    "type": "comment"
+  },
+  {
+    "by": "andrewcooke",
+    "id": 1025727,
+    "kids": [
+      1025734,
+      1025813
+    ],
+    "parent": 1025681,
+    "text": "gpu/cpu unification has to happen some time in the next 10 years (in the 2010 thread i argue against it being next year, but it's inevitable at some point).  the next amd architecture is a step in that direction.<p>edit: also, please, please, ultralight laptops with e-ink screens.<p>edit2: to clarify the above, cpus are currently tending towards more cores, while gpus are tending towards larger caches.  both are trying to extend their area of application into tasks performed by the other, in the hope of more speed over a wider range of applications.",
+    "time": 1262357721,
+    "type": "comment"
+  },
+  {
+    "by": "zitterbewegung",
+    "id": 1025906,
+    "kids": [
+      1026619
+    ],
+    "parent": 1025681,
+    "text": "PMC's will become much more prevalent and popular.",
+    "time": 1262365085,
+    "type": "comment"
+  },
+  {
+    "by": "borism",
+    "id": 1025861,
+    "parent": 1025681,
+    "text": "- web will cease to be the delivery platform of choice for applications<p>- internet will be heavily controlled by governments/corporations worldwide",
+    "time": 1262362921,
+    "type": "comment"
+  },
+  {
+    "by": "DannoHung",
+    "id": 1025746,
+    "parent": 1025681,
+    "text": "Things will actually be even more awesome than they are today, but because governments have no idea how to manage all the awesome, things will actually seem crappier.<p>I mean, I'm thinking like, silver jumpsuit awesome here.",
+    "time": 1262358643,
+    "type": "comment"
+  }
+]
