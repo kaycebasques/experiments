@@ -1,0 +1,6 @@
+beautifulsoup4==4.15.0
+pillow==12.3.0
+requests==2.34.2
+soundfile==0.14.0
+torchvision==0.27.1
+transformers==5.19.0

@@ -1,0 +1,23 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python/uv:lock.bzl", "lock")
+load("@deps//:requirements.bzl", "requirement")
+
+lock(
+    name = "deps",
+    srcs = ["deps.in"],
+    out = "deps.lock",
+)
+
+py_binary(
+    name = "20261025",
+    srcs = ["20261025.py"],
+    main = "20261025.py",
+    deps = [
+        requirement("beautifulsoup4"),
+        requirement("pillow"),
+        requirement("requests"),
+        requirement("soundfile"),
+        requirement("torchvision"),
+        requirement("transformers"),
+    ],
+)
